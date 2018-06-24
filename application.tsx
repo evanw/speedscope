@@ -462,7 +462,7 @@ export class Application extends ReloadableComponent<{}, ApplicationState> {
     ev.preventDefault()
   }
 
-  onWindowKeyPress = (ev: KeyboardEvent) => {
+  onWindowKeyPress = async (ev: KeyboardEvent) => {
     if (ev.key === '1') {
       this.setState({
         viewMode: ViewMode.CHRONO_FLAME_CHART,
@@ -479,10 +479,10 @@ export class Application extends ReloadableComponent<{}, ApplicationState> {
       const {flattenRecursion, profile} = this.state
       if (!profile) return
       if (flattenRecursion) {
-        this.setActiveProfile(profile)
+        await this.setActiveProfile(profile)
         this.setState({flattenRecursion: false})
       } else {
-        this.setActiveProfile(profile.getProfileWithRecursionFlattened())
+        await this.setActiveProfile(profile.getProfileWithRecursionFlattened())
         this.setState({flattenRecursion: true})
       }
     }
@@ -699,10 +699,11 @@ export class Application extends ReloadableComponent<{}, ApplicationState> {
         )
       }
       case ViewMode.INSIDE_OUT_VIEW: {
-        if (!this.rowAtlas) return null
+        if (!this.rowAtlas || !this.state.profile) return null
         return (
           <InsideOutView
-            profile={this.state.activeProfile}
+            profile={this.state.profile}
+            flattenRecursion={this.state.flattenRecursion}
             getColorBucketForFrame={this.getColorBucketForFrame}
             getCSSColorForFrame={this.getCSSColorForFrame}
             sortMethod={this.state.tableSortMethod}
