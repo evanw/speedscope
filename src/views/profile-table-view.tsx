@@ -2,7 +2,7 @@ import {h, Component, JSX, ComponentChild} from 'preact'
 import {StyleSheet, css} from 'aphrodite'
 import {Profile, Frame} from '../lib/profile'
 import {formatPercent} from '../lib/utils'
-import {FontSize, Colors, Sizes, commonStyle} from './style'
+import {FontSize, Colors, Sizes, commonStyle, lightOrDarkMode, useDarkMode} from './style'
 import {ColorChit} from './color-chit'
 import {ListItem, ScrollableListView} from './scrollable-list-view'
 import {actions} from '../store/actions'
@@ -34,6 +34,7 @@ interface HBarProps {
 }
 
 function HBarDisplay(props: HBarProps) {
+  const style = lightOrDarkStyle(useDarkMode())
   return (
     <div className={css(style.hBarDisplay)}>
       <div className={css(style.hBarDisplayFilled)} style={{width: `${props.perc}%`}} />
@@ -48,8 +49,10 @@ interface SortIconProps {
 class SortIcon extends Component<SortIconProps, {}> {
   render() {
     const {activeDirection} = this.props
-    const upFill = activeDirection === SortDirection.ASCENDING ? Colors.GRAY : Colors.LIGHT_GRAY
-    const downFill = activeDirection === SortDirection.DESCENDING ? Colors.GRAY : Colors.LIGHT_GRAY
+    const isDarkMode = useDarkMode()
+    const upFill = (activeDirection === SortDirection.ASCENDING) === !isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY
+    const downFill = (activeDirection === SortDirection.DESCENDING) === !isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY
+    const style = lightOrDarkStyle(isDarkMode)
 
     return (
       <svg
@@ -109,6 +112,7 @@ const ProfileTableRowView = ({
   const selfPerc = (100.0 * selfWeight) / profile.getTotalNonIdleWeight()
 
   const selected = frame === selectedFrame
+  const style = lightOrDarkStyle(useDarkMode())
 
   // We intentionally use index rather than frame.key here as the tr key
   // in order to re-use rows when sorting rather than creating all new elements.
@@ -203,10 +207,11 @@ export const ProfileTableView = memo(
     const sandwichContext = useContext(SandwichViewContext)
 
     const renderItems = useCallback(
-      (firstIndex: number, lastIndex: number) => {
+      (firstIndex: number, lastIndex: number, isDarkMode: boolean) => {
         if (!sandwichContext) return null
 
         const rows: JSX.Element[] = []
+        const style = lightOrDarkStyle(isDarkMode)
 
         for (let i = firstIndex; i <= lastIndex; i++) {
           const frame = sandwichContext.rowList[i]
@@ -274,6 +279,7 @@ export const ProfileTableView = memo(
       [onSortClick],
     )
 
+    const style = lightOrDarkStyle(useDarkMode())
     return (
       <div className={css(commonStyle.vbox, style.profileTableView)}>
         <table className={css(style.tableView)}>
@@ -320,9 +326,9 @@ export const ProfileTableView = memo(
   },
 )
 
-const style = StyleSheet.create({
+const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
   profileTableView: {
-    background: Colors.WHITE,
+    background: isDarkMode ? Colors.DARK_GRAY : Colors.WHITE,
     height: '100%',
   },
   scrollView: {
@@ -333,12 +339,12 @@ const style = StyleSheet.create({
   tableView: {
     width: '100%',
     fontSize: FontSize.LABEL,
-    background: Colors.WHITE,
+    background: isDarkMode ? Colors.DARK_GRAY : Colors.WHITE,
   },
   tableHeader: {
     borderBottom: `2px solid ${Colors.LIGHT_GRAY}`,
     textAlign: 'left',
-    color: Colors.GRAY,
+    color: isDarkMode ? Colors.LIGHT_GRAY : Colors.GRAY,
     userSelect: 'none',
   },
   sortIcon: {
@@ -350,7 +356,7 @@ const style = StyleSheet.create({
     height: Sizes.FRAME_HEIGHT,
   },
   tableRowEven: {
-    background: Colors.OFF_WHITE,
+    background: isDarkMode ? Colors.OFF_DARK : Colors.OFF_WHITE,
   },
   tableRowSelected: {
     background: Colors.DARK_BLUE,
@@ -397,7 +403,7 @@ const style = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-})
+}))
 
 interface ProfileTableViewContainerProps {
   activeProfileState: ActiveProfileState

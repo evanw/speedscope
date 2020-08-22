@@ -55,6 +55,14 @@ export class CanvasContext {
     }
   }
 
+  private wasDarkMode = false
+  setDarkMode(isDarkMode: boolean) {
+    if (this.wasDarkMode !== isDarkMode) {
+      this.wasDarkMode = isDarkMode
+      this.requestFrame()
+    }
+  }
+
   setViewport(physicalBounds: Rect, cb: () => void): void {
     const {origin, size} = physicalBounds
     let viewportBefore = this.gl.viewport

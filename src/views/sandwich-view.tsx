@@ -4,7 +4,7 @@ import {ProfileTableViewContainer, SortField, SortDirection} from './profile-tab
 import {h, JSX, createContext} from 'preact'
 import {memo} from 'preact/compat'
 import {useCallback, useMemo, useContext} from 'preact/hooks'
-import {commonStyle, Sizes, Colors, FontSize} from './style'
+import {commonStyle, Sizes, Colors, FontSize, lightOrDarkMode, useDarkMode} from './style'
 import {actions} from '../store/actions'
 import {StatelessComponent} from '../lib/typed-redux'
 import {InvertedCallerFlamegraphView} from './inverted-caller-flamegraph-view'
@@ -43,6 +43,7 @@ class SandwichView extends StatelessComponent<SandwichViewProps> {
   }
 
   render() {
+    const style = lightOrDarkStyle(useDarkMode())
     const {selectedFrame} = this.props
     let flamegraphViews: JSX.Element | null = null
 
@@ -84,7 +85,7 @@ class SandwichView extends StatelessComponent<SandwichViewProps> {
   }
 }
 
-const style = StyleSheet.create({
+const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
   tableView: {
     position: 'relative',
     flex: 1,
@@ -99,7 +100,7 @@ const style = StyleSheet.create({
     alignItems: 'flex-start',
     fontSize: FontSize.TITLE,
     width: FontSize.TITLE * 1.2,
-    borderRight: `1px solid ${Colors.LIGHT_GRAY}`,
+    borderRight: `1px solid ${isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY}`,
   },
   flamechartLabelParentBottom: {
     justifyContent: 'flex-start',
@@ -117,13 +118,13 @@ const style = StyleSheet.create({
   },
   callersAndCallees: {
     flex: 1,
-    borderLeft: `${Sizes.SEPARATOR_HEIGHT}px solid ${Colors.LIGHT_GRAY}`,
+    borderLeft: `${Sizes.SEPARATOR_HEIGHT}px solid ${isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY}`,
   },
   divider: {
     height: 2,
-    background: Colors.LIGHT_GRAY,
+    background: isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY,
   },
-})
+}))
 
 interface SandwichViewContainerProps {
   activeProfileState: ActiveProfileState

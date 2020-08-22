@@ -3,7 +3,7 @@ import {StyleSheet, css} from 'aphrodite'
 import {FileSystemDirectoryEntry} from '../import/file-system-entry'
 
 import {ProfileGroup} from '../lib/profile'
-import {FontFamily, FontSize, Colors, Duration} from './style'
+import {FontFamily, FontSize, Colors, Duration, lightOrDarkMode, useDarkMode} from './style'
 import {importEmscriptenSymbolMap} from '../lib/emscripten'
 import {SandwichViewContainer} from './sandwich-view'
 import {saveToFile} from '../lib/file-format'
@@ -92,7 +92,7 @@ export class GLCanvas extends StatelessComponent<GLCanvasProps> {
       widthInAppUnits,
       heightInAppUnits,
     )
-    this.props.canvasContext.gl.clear(new Graphics.Color(1, 1, 1, 1))
+    this.props.canvasContext.gl.clear(useDarkMode() ? new Graphics.Color(0.1, 0.1, 0.1, 1) : new Graphics.Color(1, 1, 1, 1))
   }
 
   onWindowResize = () => {
@@ -121,6 +121,9 @@ export class GLCanvas extends StatelessComponent<GLCanvasProps> {
     window.removeEventListener('resize', this.onWindowResize)
   }
   render() {
+    const isDarkMode = useDarkMode()
+    const style = lightOrDarkStyle(isDarkMode)
+    this.props.canvasContext?.setDarkMode(isDarkMode)
     return (
       <div ref={this.containerRef} className={css(style.glCanvasView)}>
         <canvas ref={this.ref} width={1} height={1} />
@@ -403,6 +406,7 @@ export class Application extends StatelessComponent<ApplicationProps> {
   }
 
   renderLanding() {
+    const style = lightOrDarkStyle(useDarkMode())
     return (
       <div className={css(style.landingContainer)}>
         <div className={css(style.landingMessage)}>
@@ -474,6 +478,7 @@ export class Application extends StatelessComponent<ApplicationProps> {
   }
 
   renderError() {
+    const style = lightOrDarkStyle(useDarkMode())
     return (
       <div className={css(style.error)}>
         <div>😿 Something went wrong.</div>
@@ -483,6 +488,7 @@ export class Application extends StatelessComponent<ApplicationProps> {
   }
 
   renderLoadingBar() {
+    const style = lightOrDarkStyle(useDarkMode())
     return <div className={css(style.loading)} />
   }
 
@@ -517,6 +523,7 @@ export class Application extends StatelessComponent<ApplicationProps> {
   }
 
   render() {
+    const style = lightOrDarkStyle(useDarkMode())
     return (
       <div
         onDrop={this.onDrop}
@@ -537,7 +544,7 @@ export class Application extends StatelessComponent<ApplicationProps> {
   }
 }
 
-const style = StyleSheet.create({
+const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
   glCanvasView: {
     position: 'absolute',
     width: '100vw',
@@ -579,6 +586,7 @@ const style = StyleSheet.create({
     position: 'relative',
     fontFamily: FontFamily.MONOSPACE,
     lineHeight: '20px',
+    color: isDarkMode ? Colors.OFF_WHITE : Colors.BLACK,
   },
   dragTargetRoot: {
     cursor: 'copy',
@@ -640,4 +648,4 @@ const style = StyleSheet.create({
     cursor: 'pointer',
     textDecoration: 'none',
   },
-})
+}))

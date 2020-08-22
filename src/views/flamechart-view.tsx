@@ -7,8 +7,8 @@ import {Rect, Vec2, AffineTransform} from '../lib/math'
 import {formatPercent} from '../lib/utils'
 import {FlamechartMinimapView} from './flamechart-minimap-view'
 
-import {style} from './flamechart-style'
-import {Sizes, commonStyle} from './style'
+import {lightOrDarkStyle} from './flamechart-style'
+import {Sizes, commonStyle, useDarkMode} from './style'
 import {FlamechartDetailView} from './flamechart-detail-view'
 import {FlamechartPanZoomView} from './flamechart-pan-zoom-view'
 import {Hovertip} from './hovertip'
@@ -76,6 +76,7 @@ export class FlamechartView extends StatelessComponent<FlamechartViewProps> {
     if (!hover) return null
     const {width, height, left, top} = this.container.getBoundingClientRect()
     const offset = new Vec2(hover.event.clientX - left, hover.event.clientY - top)
+    const style = lightOrDarkStyle(useDarkMode())
 
     return (
       <Hovertip containerSize={new Vec2(width, height)} offset={offset}>
@@ -93,6 +94,7 @@ export class FlamechartView extends StatelessComponent<FlamechartViewProps> {
   }
 
   render() {
+    const style = lightOrDarkStyle(useDarkMode())
     return (
       <div className={css(style.fill, commonStyle.vbox)} ref={this.containerRef}>
         <FlamechartMinimapView

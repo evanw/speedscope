@@ -1,7 +1,7 @@
 import {StyleSheet} from 'aphrodite'
-import {FontSize, Colors, Sizes} from './style'
+import {FontSize, Colors, Sizes, lightOrDarkMode} from './style'
 
-export const style = StyleSheet.create({
+export const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
   hoverCount: {
     color: Colors.GREEN,
   },
@@ -14,7 +14,7 @@ export const style = StyleSheet.create({
   },
   minimap: {
     height: Sizes.MINIMAP_HEIGHT,
-    borderBottom: `${Sizes.SEPARATOR_HEIGHT}px solid ${Colors.LIGHT_GRAY}`,
+    borderBottom: `${Sizes.SEPARATOR_HEIGHT}px solid ${isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY}`,
   },
   panZoomView: {
     flex: 1,
@@ -26,10 +26,10 @@ export const style = StyleSheet.create({
     overflow: 'hidden',
     gridTemplateColumns: '120px 120px 1fr',
     gridTemplateRows: 'repeat(4, 1fr)',
-    borderTop: `${Sizes.SEPARATOR_HEIGHT}px solid ${Colors.LIGHT_GRAY}`,
+    borderTop: `${Sizes.SEPARATOR_HEIGHT}px solid ${isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY}`,
     fontSize: FontSize.LABEL,
     position: 'absolute',
-    background: Colors.WHITE,
+    background: isDarkMode ? Colors.DARK_GRAY : Colors.WHITE,
     width: '100vw',
     bottom: 0,
   },
@@ -45,7 +45,7 @@ export const style = StyleSheet.create({
     whiteSpace: 'nowrap',
   },
   stackFileLine: {
-    color: Colors.LIGHT_GRAY,
+    color: isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY,
   },
   statsTable: {
     display: 'grid',
@@ -66,11 +66,11 @@ export const style = StyleSheet.create({
   },
   thisInstanceCell: {
     background: Colors.DARK_BLUE,
-    color: Colors.WHITE,
+    color: isDarkMode ? Colors.BLACK : Colors.WHITE,
   },
   allInstancesCell: {
     background: Colors.PALE_DARK_BLUE,
-    color: Colors.WHITE,
+    color: isDarkMode ? Colors.BLACK : Colors.WHITE,
   },
   barDisplay: {
     position: 'absolute',
@@ -79,4 +79,4 @@ export const style = StyleSheet.create({
     background: 'rgba(0, 0, 0, 0.2)',
     width: '100%',
   },
-})
+}))

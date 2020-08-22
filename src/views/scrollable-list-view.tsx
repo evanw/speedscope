@@ -3,6 +3,7 @@
 
 import {h, JSX} from 'preact'
 import {useState, useCallback, useRef, useMemo, useEffect} from 'preact/hooks'
+import {useDarkMode} from './style'
 
 export interface ListItem {
   size: number
@@ -20,6 +21,7 @@ interface ScrollableListViewProps {
   renderItems: (
     firstVisibleIndex: number,
     lastVisibleIndex: number,
+    isDarkMode: boolean,
   ) => JSX.Element | JSX.Element[] | null
   className?: string
   initialIndexInView?: number | null
@@ -32,6 +34,7 @@ export const ScrollableListView = ({
   className,
   initialIndexInView,
 }: ScrollableListViewProps) => {
+  const isDarkMode = useDarkMode()
   const [viewportSize, setViewportSize] = useState<number | null>(null)
   const [viewportScrollOffset, setViewportScrollOffset] = useState<number>(0)
 
@@ -130,9 +133,9 @@ export const ScrollableListView = ({
 
   const visibleItems = useMemo(() => {
     return rangeResult
-      ? renderItems(rangeResult.firstVisibleIndex, rangeResult.lastVisibleIndex)
+      ? renderItems(rangeResult.firstVisibleIndex, rangeResult.lastVisibleIndex, isDarkMode)
       : null
-  }, [renderItems, rangeResult])
+  }, [renderItems, rangeResult, isDarkMode])
 
   const content = useMemo(() => {
     return (

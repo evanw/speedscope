@@ -3,8 +3,8 @@ import {css} from 'aphrodite'
 import {Flamechart} from '../lib/flamechart'
 import {Rect, Vec2, AffineTransform, clamp} from '../lib/math'
 import {FlamechartRenderer} from '../gl/flamechart-renderer'
-import {style} from './flamechart-style'
-import {FontFamily, FontSize, Colors, Sizes, commonStyle} from './style'
+import {lightOrDarkStyle} from './flamechart-style'
+import {FontFamily, FontSize, Colors, Sizes, commonStyle, useDarkMode} from './style'
 import {CanvasContext} from '../gl/canvas-context'
 import {cachedMeasureTextWidth} from '../lib/text-utils'
 
@@ -133,7 +133,8 @@ export class FlamechartMinimapView extends Component<FlamechartMinimapViewProps,
     }
 
     {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
+      const isDarkMode = useDarkMode()
+      ctx.fillStyle = isDarkMode ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.8)'
       ctx.fillRect(0, 0, physicalViewSize.x, physicalViewSpaceFrameHeight)
       ctx.textBaseline = 'top'
 
@@ -144,7 +145,9 @@ export class FlamechartMinimapView extends Component<FlamechartMinimapViewProps,
         const labelText = this.props.flamechart.formatValue(x)
         const textWidth = Math.ceil(cachedMeasureTextWidth(ctx, labelText))
 
+        ctx.fillStyle = isDarkMode ? Colors.LIGHT_GRAY : Colors.DARK_GRAY
         ctx.fillText(labelText, pos - textWidth - labelPaddingPx, labelPaddingPx)
+        ctx.fillStyle = isDarkMode ? Colors.GRAY : Colors.DARK_GRAY
         ctx.fillRect(pos, 0, 1, physicalViewSize.y)
       }
     }
@@ -406,6 +409,7 @@ export class FlamechartMinimapView extends Component<FlamechartMinimapViewProps,
   }
 
   render() {
+    const style = lightOrDarkStyle(useDarkMode())
     return (
       <div
         ref={this.containerRef}

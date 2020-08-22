@@ -1,10 +1,11 @@
 import {StyleDeclarationValue, css} from 'aphrodite'
 import {h, Component, JSX} from 'preact'
-import {style} from './flamechart-style'
+import {lightOrDarkStyle} from './flamechart-style'
 import {formatPercent} from '../lib/utils'
 import {Frame, CallTreeNode} from '../lib/profile'
 import {ColorChit} from './color-chit'
 import {Flamechart} from '../lib/flamechart'
+import {useDarkMode} from './style'
 
 interface StatisticsTableProps {
   title: string
@@ -21,6 +22,7 @@ class StatisticsTable extends Component<StatisticsTableProps, {}> {
     const self = this.props.formatter(this.props.selectedSelf)
     const totalPerc = (100.0 * this.props.selectedTotal) / this.props.grandTotal
     const selfPerc = (100.0 * this.props.selectedSelf) / this.props.grandTotal
+    const style = lightOrDarkStyle(useDarkMode())
 
     return (
       <div className={css(style.statsTable)}>
@@ -53,6 +55,7 @@ interface StackTraceViewProps {
 }
 class StackTraceView extends Component<StackTraceViewProps, {}> {
   render() {
+    const style = lightOrDarkStyle(useDarkMode())
     const rows: JSX.Element[] = []
     let node: CallTreeNode | null = this.props.node
     for (; node && !node.isRoot(); node = node.parent) {
@@ -96,6 +99,7 @@ export class FlamechartDetailView extends Component<FlamechartDetailViewProps, {
   render() {
     const {flamechart, selectedNode} = this.props
     const {frame} = selectedNode
+    const style = lightOrDarkStyle(useDarkMode())
 
     return (
       <div className={css(style.detailView)}>

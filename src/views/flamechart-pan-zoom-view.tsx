@@ -3,14 +3,14 @@ import {CallTreeNode} from '../lib/profile'
 import {Flamechart, FlamechartFrame} from '../lib/flamechart'
 import {CanvasContext} from '../gl/canvas-context'
 import {FlamechartRenderer} from '../gl/flamechart-renderer'
-import {Sizes, FontSize, Colors, FontFamily, commonStyle} from './style'
+import {Sizes, FontSize, Colors, FontFamily, commonStyle, useDarkMode} from './style'
 import {
   cachedMeasureTextWidth,
   ELLIPSIS,
   trimTextMid,
   remapRangesToTrimmedText,
 } from '../lib/text-utils'
-import {style} from './flamechart-style'
+import {lightOrDarkStyle} from './flamechart-style'
 import {h, Component} from 'preact'
 import {css} from 'aphrodite'
 import {ProfileSearchResults} from '../lib/profile-search'
@@ -340,13 +340,13 @@ export class FlamechartPanZoomView extends Component<FlamechartPanZoomViewProps,
 
     matchedFrameBatch.fill(ctx, Colors.ORANGE)
     matchedTextHighlightBatch.fill(ctx, Colors.YELLOW)
-    fadedLabelBatch.fill(ctx, Colors.LIGHT_GRAY)
-    labelBatch.fill(ctx, Colors.BLACK)
+    fadedLabelBatch.fill(ctx, useDarkMode() ? Colors.GRAY : Colors.LIGHT_GRAY)
+    labelBatch.fill(ctx, useDarkMode() && this.props.searchResults == null ? Colors.WHITE : Colors.BLACK)
     indirectlySelectedOutlineBatch.stroke(ctx, Colors.PALE_DARK_BLUE, frameOutlineWidth)
     directlySelectedOutlineBatch.stroke(ctx, Colors.DARK_BLUE, frameOutlineWidth)
 
     if (this.hoveredLabel) {
-      let color = Colors.DARK_GRAY
+      let color = useDarkMode() ? Colors.WHITE : Colors.DARK_GRAY
       if (this.props.selectedNode === this.hoveredLabel.node) {
         color = Colors.DARK_BLUE
       }
@@ -397,16 +397,18 @@ export class FlamechartPanZoomView extends Component<FlamechartPanZoomViewProps,
     {
       const y = this.props.renderInverted ? physicalViewSize.y - physicalViewSpaceFrameHeight : 0
 
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
+      const isDarkMode = useDarkMode()
+      ctx.fillStyle = isDarkMode ? 'rgba(0, 0, 0, 0.5)' : 'rgba(255, 255, 255, 0.8)'
       ctx.fillRect(0, y, physicalViewSize.x, physicalViewSpaceFrameHeight)
-      ctx.fillStyle = Colors.DARK_GRAY
       ctx.textBaseline = 'top'
       for (let x = Math.ceil(left / interval) * interval; x < right; x += interval) {
         // TODO(jlfwong): Ensure that labels do not overlap
         const pos = Math.round(configToPhysical.transformPosition(new Vec2(x, 0)).x)
         const labelText = this.props.flamechart.formatValue(x)
         const textWidth = cachedMeasureTextWidth(ctx, labelText)
+        ctx.fillStyle = isDarkMode ? Colors.LIGHT_GRAY : Colors.DARK_GRAY
         ctx.fillText(labelText, pos - textWidth - labelPaddingPx, y + labelPaddingPx)
+        ctx.fillStyle = isDarkMode ? Colors.GRAY : Colors.DARK_GRAY
         ctx.fillRect(pos, 0, 1, physicalViewSize.y)
       }
     }
@@ -763,6 +765,7 @@ export class FlamechartPanZoomView extends Component<FlamechartPanZoomViewProps,
   }
 
   render() {
+    const style = lightOrDarkStyle(useDarkMode())
     return (
       <div
         className={css(style.panZoomView, commonStyle.vbox)}

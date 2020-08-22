@@ -1,5 +1,5 @@
 import {Vec2} from '../lib/math'
-import {Sizes, Colors, FontSize, FontFamily, ZIndex} from './style'
+import {Sizes, Colors, FontSize, FontFamily, ZIndex, lightOrDarkMode, useDarkMode} from './style'
 import {css, StyleSheet} from 'aphrodite'
 import {h, Component} from 'preact'
 
@@ -29,6 +29,7 @@ export class Hovertip extends Component<HovertipProps, {}> {
       positionStyle.bottom = height - offset.y + 1
     }
 
+    const style = lightOrDarkStyle(useDarkMode())
     return (
       <div className={css(style.hoverTip)} style={positionStyle}>
         <div className={css(style.hoverTipRow)}>{this.props.children}</div>
@@ -39,11 +40,11 @@ export class Hovertip extends Component<HovertipProps, {}> {
 
 const HOVERTIP_PADDING = 2
 
-const style = StyleSheet.create({
+const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
   hoverTip: {
     position: 'absolute',
-    background: Colors.WHITE,
-    border: '1px solid black',
+    background: isDarkMode ? Colors.BLACK : Colors.WHITE,
+    border: `1px solid ${isDarkMode ? Colors.LIGHT_GRAY : Colors.BLACK}`,
     maxWidth: Sizes.TOOLTIP_WIDTH_MAX,
     paddingTop: HOVERTIP_PADDING,
     paddingBottom: HOVERTIP_PADDING,
@@ -61,4 +62,4 @@ const style = StyleSheet.create({
     paddingRight: HOVERTIP_PADDING,
     maxWidth: Sizes.TOOLTIP_WIDTH_MAX,
   },
-})
+}))

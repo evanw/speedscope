@@ -1,4 +1,6 @@
 import {StyleSheet} from 'aphrodite'
+import {h, createContext, Component} from 'preact'
+import {useContext} from 'preact/hooks'
 
 export enum FontFamily {
   MONOSPACE = '"Source Code Pro", Courier, monospace',
@@ -16,6 +18,7 @@ export enum Colors {
   LIGHT_GRAY = '#BDBDBD',
   GRAY = '#666666',
   DARK_GRAY = '#222222',
+  OFF_DARK = '#292929',
   BLACK = '#000000',
   BRIGHT_BLUE = '#56CCF2',
   DARK_BLUE = '#2F80ED',
@@ -66,3 +69,39 @@ export const commonStyle = StyleSheet.create({
     overflow: 'hidden',
   },
 })
+
+const DarkModeContext = createContext(false)
+const darkMedia = '(prefers-color-scheme: dark)'
+
+export function useDarkMode(): boolean {
+  return useContext(DarkModeContext)
+}
+
+export class DarkModeContextProvider extends Component<{}, {isDarkMode: boolean}> {
+  state = {isDarkMode: matchMedia(darkMedia).matches}
+
+  constructor() {
+    super()
+    matchMedia(darkMedia).addEventListener('change', event => {
+      this.setState({isDarkMode: event.matches})
+    })
+  }
+
+  render() {
+    return <DarkModeContext.Provider value={this.state.isDarkMode}>
+      {this.props.children}
+    </DarkModeContext.Provider>
+  }
+}
+
+export function lightOrDarkMode<T>(callback: (isDarkMode: boolean) => T): (isDarkMode: boolean) => T {
+  let wasDarkMode = false
+  let style: T | undefined
+  return isDarkMode => {
+    if (style === undefined || wasDarkMode !== isDarkMode) {
+      wasDarkMode = isDarkMode
+      style = callback(isDarkMode)
+    }
+    return style
+  }
+}

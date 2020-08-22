@@ -1,6 +1,7 @@
 import {Vec2, Rect, AffineTransform} from '../lib/math'
 import {Graphics} from './graphics'
 import {setUniformAffineTransform} from './utils'
+import {useDarkMode} from '../views/style'
 
 const vertexFormat = new Graphics.VertexFormat()
 vertexFormat.add('position', Graphics.AttributeType.FLOAT, 2)
@@ -25,6 +26,7 @@ const frag = `
 
   uniform vec2 uvSpacePixelSize;
   uniform float renderOutlines;
+  uniform int isDarkMode;
 
   varying vec2 vUv;
   uniform sampler2D colorTexture;
@@ -51,6 +53,14 @@ const frag = `
 
   vec3 colorForBucket(float t) {
     float x = triangle(30.0 * t);
+
+    if (isDarkMode != 0) {
+      float H = 360.0 * (0.9 * t);
+      float C = 0.40 + 0.2 * x;
+      float L = 0.15 - 0.1 * x;
+      return hcl2rgb(H, C, L);
+    }
+
     float H = 360.0 * (0.9 * t);
     float C = 0.25 + 0.2 * x;
     float L = 0.80 - 0.15 * x;
@@ -153,6 +163,7 @@ export class FlamechartColorPassRenderer {
       new Vec2(props.rectInfoTexture.width, props.rectInfoTexture.height),
     )
 
+    this.material.setUniformInt('isDarkMode', useDarkMode() ? 1 : 0)
     this.material.setUniformSampler('colorTexture', props.rectInfoTexture, 0)
     setUniformAffineTransform(this.material, 'uvTransform', uvTransform)
     this.material.setUniformFloat('renderOutlines', props.renderOutlines ? 1.0 : 0.0)

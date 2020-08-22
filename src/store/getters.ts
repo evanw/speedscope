@@ -4,6 +4,7 @@ import {RowAtlas} from '../gl/row-atlas'
 import {CanvasContext} from '../gl/canvas-context'
 import {Color} from '../lib/color'
 import {FlamechartRowAtlasKey} from '../gl/flamechart-renderer'
+import {useDarkMode} from '../views/style'
 
 export const createGetColorBucketForFrame = memoizeByReference(
   (frameToColorBucket: Map<number | string, number>) => {
@@ -20,6 +21,14 @@ export const createGetCSSColorForFrame = memoizeByReference(
       const t = getColorBucketForFrame(frame) / 255
 
       const x = triangle(30.0 * t)
+
+      if (useDarkMode()) {
+        const H = 360.0 * (0.9 * t)
+        const C = 0.40 + 0.2 * x
+        const L = 0.15 - 0.1 * x
+        return Color.fromLumaChromaHue(L, C, H).toCSS()
+      }
+
       const H = 360.0 * (0.9 * t)
       const C = 0.25 + 0.2 * x
       const L = 0.8 - 0.15 * x

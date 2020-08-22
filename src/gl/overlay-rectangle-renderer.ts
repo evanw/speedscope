@@ -1,6 +1,7 @@
 import {AffineTransform, Rect} from '../lib/math'
 import {Graphics} from './graphics'
 import {setUniformAffineTransform, setUniformVec2} from './utils'
+import {useDarkMode} from '../views/style'
 
 export interface ViewportRectangleRendererProps {
   configSpaceToPhysicalViewSpace: AffineTransform
@@ -27,6 +28,7 @@ const frag = `
   uniform vec2 configSpaceViewportOrigin;
   uniform vec2 configSpaceViewportSize;
   uniform float framebufferHeight;
+  uniform int isDarkMode;
 
   void main() {
     vec2 origin = (configSpaceToPhysicalViewSpace * vec3(configSpaceViewportOrigin, 1.0)).xy;
@@ -52,10 +54,10 @@ const frag = `
       gl_FragColor = vec4(0, 0, 0, 0);
     } else if (maxdist < borderWidth) {
       // Inside viewport rectangle at border
-      gl_FragColor = vec4(0.7, 0.7, 0.7, 0.8);
+      gl_FragColor = isDarkMode != 0 ? vec4(0.5, 0.5, 0.5, 0.8) : vec4(0.7, 0.7, 0.7, 0.8);
     } else {
       // Outside viewport rectangle
-      gl_FragColor = vec4(0.7, 0.7, 0.7, 0.5);
+      gl_FragColor = isDarkMode != 0 ? vec4(0.2, 0.2, 0.2, 0.8) : vec4(0.7, 0.7, 0.7, 0.5);
     }
   }
 `
@@ -97,6 +99,7 @@ export class ViewportRectangleRenderer {
     this.material.setUniformVec2('physicalOrigin', viewport.x, viewport.y)
     this.material.setUniformVec2('physicalSize', viewport.width, viewport.height)
 
+    this.material.setUniformInt('isDarkMode', useDarkMode() ? 1 : 0)
     this.material.setUniformFloat('framebufferHeight', this.gl.renderTargetHeightInPixels)
 
     this.gl.setBlendState(

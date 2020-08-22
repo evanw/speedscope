@@ -6,6 +6,7 @@ import {useActionCreator} from '../lib/preact-redux'
 import {memo} from 'preact/compat'
 import {useAppSelector, useActiveProfileState} from '../store'
 import {ProfileSearchContextProvider} from './search-view'
+import {DarkModeContextProvider} from './style'
 
 const {
   setLoading,
@@ -27,6 +28,7 @@ export const ApplicationContainer = memo(() => {
 
   return (
     <ProfileSearchContextProvider>
+      <DarkModeContextProvider>
       <Application
         activeProfileState={useActiveProfileState()}
         canvasContext={canvasContext}
@@ -40,6 +42,7 @@ export const ApplicationContainer = memo(() => {
         setProfileIndexToView={useActionCreator(setProfileIndexToView, [])}
         {...appState}
       />
+      </DarkModeContextProvider>
     </ProfileSearchContextProvider>
   )
 })
