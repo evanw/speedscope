@@ -24,7 +24,7 @@ export const createGetCSSColorForFrame = memoizeByReference(
 
       if (useDarkMode()) {
         const H = 360.0 * (0.9 * t)
-        const C = 0.40 + 0.2 * x
+        const C = 0.4 + 0.2 * x
         const L = 0.15 - 0.1 * x
         return Color.fromLumaChromaHue(L, C, H).toCSS()
       }

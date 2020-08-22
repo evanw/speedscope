@@ -85,46 +85,50 @@ class SandwichView extends StatelessComponent<SandwichViewProps> {
   }
 }
 
-const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
-  tableView: {
-    position: 'relative',
-    flex: 1,
-  },
-  panZoomViewWraper: {
-    flex: 1,
-  },
-  flamechartLabelParent: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-start',
-    fontSize: FontSize.TITLE,
-    width: FontSize.TITLE * 1.2,
-    borderRight: `1px solid ${isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY}`,
-  },
-  flamechartLabelParentBottom: {
-    justifyContent: 'flex-start',
-  },
-  flamechartLabel: {
-    transform: 'rotate(-90deg)',
-    transformOrigin: '50% 50% 0',
-    width: FontSize.TITLE * 1.2,
-    flexShrink: 1,
-  },
-  flamechartLabelBottom: {
-    transform: 'rotate(-90deg)',
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-  callersAndCallees: {
-    flex: 1,
-    borderLeft: `${Sizes.SEPARATOR_HEIGHT}px solid ${isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY}`,
-  },
-  divider: {
-    height: 2,
-    background: isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY,
-  },
-}))
+const lightOrDarkStyle = lightOrDarkMode(isDarkMode =>
+  StyleSheet.create({
+    tableView: {
+      position: 'relative',
+      flex: 1,
+    },
+    panZoomViewWraper: {
+      flex: 1,
+    },
+    flamechartLabelParent: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-end',
+      alignItems: 'flex-start',
+      fontSize: FontSize.TITLE,
+      width: FontSize.TITLE * 1.2,
+      borderRight: `1px solid ${isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY}`,
+    },
+    flamechartLabelParentBottom: {
+      justifyContent: 'flex-start',
+    },
+    flamechartLabel: {
+      transform: 'rotate(-90deg)',
+      transformOrigin: '50% 50% 0',
+      width: FontSize.TITLE * 1.2,
+      flexShrink: 1,
+    },
+    flamechartLabelBottom: {
+      transform: 'rotate(-90deg)',
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    callersAndCallees: {
+      flex: 1,
+      borderLeft: `${Sizes.SEPARATOR_HEIGHT}px solid ${
+        isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY
+      }`,
+    },
+    divider: {
+      height: 2,
+      background: isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY,
+    },
+  }),
+)
 
 interface SandwichViewContainerProps {
   activeProfileState: ActiveProfileState

@@ -88,13 +88,17 @@ export class DarkModeContextProvider extends Component<{}, {isDarkMode: boolean}
   }
 
   render() {
-    return <DarkModeContext.Provider value={this.state.isDarkMode}>
-      {this.props.children}
-    </DarkModeContext.Provider>
+    return (
+      <DarkModeContext.Provider value={this.state.isDarkMode}>
+        {this.props.children}
+      </DarkModeContext.Provider>
+    )
   }
 }
 
-export function lightOrDarkMode<T>(callback: (isDarkMode: boolean) => T): (isDarkMode: boolean) => T {
+export function lightOrDarkMode<T>(
+  callback: (isDarkMode: boolean) => T,
+): (isDarkMode: boolean) => T {
   let wasDarkMode = false
   let style: T | undefined
   return isDarkMode => {

@@ -29,19 +29,19 @@ export const ApplicationContainer = memo(() => {
   return (
     <ProfileSearchContextProvider>
       <DarkModeContextProvider>
-      <Application
-        activeProfileState={useActiveProfileState()}
-        canvasContext={canvasContext}
-        setGLCanvas={useActionCreator(setGLCanvas, [])}
-        setLoading={useActionCreator(setLoading, [])}
-        setError={useActionCreator(setError, [])}
-        setProfileGroup={useActionCreator(setProfileGroup, [])}
-        setDragActive={useActionCreator(setDragActive, [])}
-        setViewMode={useActionCreator(setViewMode, [])}
-        setFlattenRecursion={useActionCreator(setFlattenRecursion, [])}
-        setProfileIndexToView={useActionCreator(setProfileIndexToView, [])}
-        {...appState}
-      />
+        <Application
+          activeProfileState={useActiveProfileState()}
+          canvasContext={canvasContext}
+          setGLCanvas={useActionCreator(setGLCanvas, [])}
+          setLoading={useActionCreator(setLoading, [])}
+          setError={useActionCreator(setError, [])}
+          setProfileGroup={useActionCreator(setProfileGroup, [])}
+          setDragActive={useActionCreator(setDragActive, [])}
+          setViewMode={useActionCreator(setViewMode, [])}
+          setFlattenRecursion={useActionCreator(setFlattenRecursion, [])}
+          setProfileIndexToView={useActionCreator(setProfileIndexToView, [])}
+          {...appState}
+        />
       </DarkModeContextProvider>
     </ProfileSearchContextProvider>
   )

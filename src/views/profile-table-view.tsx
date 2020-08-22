@@ -50,8 +50,14 @@ class SortIcon extends Component<SortIconProps, {}> {
   render() {
     const {activeDirection} = this.props
     const isDarkMode = useDarkMode()
-    const upFill = (activeDirection === SortDirection.ASCENDING) === !isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY
-    const downFill = (activeDirection === SortDirection.DESCENDING) === !isDarkMode ? Colors.GRAY : Colors.LIGHT_GRAY
+    const upFill =
+      (activeDirection === SortDirection.ASCENDING) === !isDarkMode
+        ? Colors.GRAY
+        : Colors.LIGHT_GRAY
+    const downFill =
+      (activeDirection === SortDirection.DESCENDING) === !isDarkMode
+        ? Colors.GRAY
+        : Colors.LIGHT_GRAY
     const style = lightOrDarkStyle(isDarkMode)
 
     return (
@@ -326,84 +332,86 @@ export const ProfileTableView = memo(
   },
 )
 
-const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
-  profileTableView: {
-    background: isDarkMode ? Colors.DARK_GRAY : Colors.WHITE,
-    height: '100%',
-  },
-  scrollView: {
-    overflowY: 'auto',
-    overflowX: 'hidden',
-    flexGrow: 1,
-  },
-  tableView: {
-    width: '100%',
-    fontSize: FontSize.LABEL,
-    background: isDarkMode ? Colors.DARK_GRAY : Colors.WHITE,
-  },
-  tableHeader: {
-    borderBottom: `2px solid ${Colors.LIGHT_GRAY}`,
-    textAlign: 'left',
-    color: isDarkMode ? Colors.LIGHT_GRAY : Colors.GRAY,
-    userSelect: 'none',
-  },
-  sortIcon: {
-    position: 'relative',
-    top: 1,
-    marginRight: Sizes.FRAME_HEIGHT / 4,
-  },
-  tableRow: {
-    height: Sizes.FRAME_HEIGHT,
-  },
-  tableRowEven: {
-    background: isDarkMode ? Colors.OFF_DARK : Colors.OFF_WHITE,
-  },
-  tableRowSelected: {
-    background: Colors.DARK_BLUE,
-    color: Colors.WHITE,
-  },
-  numericCell: {
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    position: 'relative',
-    textAlign: 'right',
-    paddingRight: Sizes.FRAME_HEIGHT,
-    width: 6 * Sizes.FRAME_HEIGHT,
-    minWidth: 6 * Sizes.FRAME_HEIGHT,
-  },
-  textCell: {
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    width: '100%',
-    maxWidth: 0,
-  },
-  hBarDisplay: {
-    position: 'absolute',
-    background: Colors.TRANSPARENT_GREEN,
-    bottom: 2,
-    height: 2,
-    width: `calc(100% - ${2 * Sizes.FRAME_HEIGHT}px)`,
-    right: Sizes.FRAME_HEIGHT,
-  },
-  hBarDisplayFilled: {
-    height: '100%',
-    position: 'absolute',
-    background: Colors.GREEN,
-    right: 0,
-  },
-  matched: {
-    borderBottom: `2px solid ${Colors.BLACK}`,
-  },
-  matchedSelected: {
-    borderColor: Colors.WHITE,
-  },
-  emptyState: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-}))
+const lightOrDarkStyle = lightOrDarkMode(isDarkMode =>
+  StyleSheet.create({
+    profileTableView: {
+      background: isDarkMode ? Colors.DARK_GRAY : Colors.WHITE,
+      height: '100%',
+    },
+    scrollView: {
+      overflowY: 'auto',
+      overflowX: 'hidden',
+      flexGrow: 1,
+    },
+    tableView: {
+      width: '100%',
+      fontSize: FontSize.LABEL,
+      background: isDarkMode ? Colors.DARK_GRAY : Colors.WHITE,
+    },
+    tableHeader: {
+      borderBottom: `2px solid ${Colors.LIGHT_GRAY}`,
+      textAlign: 'left',
+      color: isDarkMode ? Colors.LIGHT_GRAY : Colors.GRAY,
+      userSelect: 'none',
+    },
+    sortIcon: {
+      position: 'relative',
+      top: 1,
+      marginRight: Sizes.FRAME_HEIGHT / 4,
+    },
+    tableRow: {
+      height: Sizes.FRAME_HEIGHT,
+    },
+    tableRowEven: {
+      background: isDarkMode ? Colors.OFF_DARK : Colors.OFF_WHITE,
+    },
+    tableRowSelected: {
+      background: Colors.DARK_BLUE,
+      color: Colors.WHITE,
+    },
+    numericCell: {
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      position: 'relative',
+      textAlign: 'right',
+      paddingRight: Sizes.FRAME_HEIGHT,
+      width: 6 * Sizes.FRAME_HEIGHT,
+      minWidth: 6 * Sizes.FRAME_HEIGHT,
+    },
+    textCell: {
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      width: '100%',
+      maxWidth: 0,
+    },
+    hBarDisplay: {
+      position: 'absolute',
+      background: Colors.TRANSPARENT_GREEN,
+      bottom: 2,
+      height: 2,
+      width: `calc(100% - ${2 * Sizes.FRAME_HEIGHT}px)`,
+      right: Sizes.FRAME_HEIGHT,
+    },
+    hBarDisplayFilled: {
+      height: '100%',
+      position: 'absolute',
+      background: Colors.GREEN,
+      right: 0,
+    },
+    matched: {
+      borderBottom: `2px solid ${Colors.BLACK}`,
+    },
+    matchedSelected: {
+      borderColor: Colors.WHITE,
+    },
+    emptyState: {
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+  }),
+)
 
 interface ProfileTableViewContainerProps {
   activeProfileState: ActiveProfileState

@@ -40,26 +40,28 @@ export class Hovertip extends Component<HovertipProps, {}> {
 
 const HOVERTIP_PADDING = 2
 
-const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
-  hoverTip: {
-    position: 'absolute',
-    background: isDarkMode ? Colors.BLACK : Colors.WHITE,
-    border: `1px solid ${isDarkMode ? Colors.LIGHT_GRAY : Colors.BLACK}`,
-    maxWidth: Sizes.TOOLTIP_WIDTH_MAX,
-    paddingTop: HOVERTIP_PADDING,
-    paddingBottom: HOVERTIP_PADDING,
-    pointerEvents: 'none',
-    userSelect: 'none',
-    fontSize: FontSize.LABEL,
-    fontFamily: FontFamily.MONOSPACE,
-    zIndex: ZIndex.HOVERTIP,
-  },
-  hoverTipRow: {
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-    overflowX: 'hidden',
-    paddingLeft: HOVERTIP_PADDING,
-    paddingRight: HOVERTIP_PADDING,
-    maxWidth: Sizes.TOOLTIP_WIDTH_MAX,
-  },
-}))
+const lightOrDarkStyle = lightOrDarkMode(isDarkMode =>
+  StyleSheet.create({
+    hoverTip: {
+      position: 'absolute',
+      background: isDarkMode ? Colors.BLACK : Colors.WHITE,
+      border: `1px solid ${isDarkMode ? Colors.LIGHT_GRAY : Colors.BLACK}`,
+      maxWidth: Sizes.TOOLTIP_WIDTH_MAX,
+      paddingTop: HOVERTIP_PADDING,
+      paddingBottom: HOVERTIP_PADDING,
+      pointerEvents: 'none',
+      userSelect: 'none',
+      fontSize: FontSize.LABEL,
+      fontFamily: FontFamily.MONOSPACE,
+      zIndex: ZIndex.HOVERTIP,
+    },
+    hoverTipRow: {
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflowX: 'hidden',
+      paddingLeft: HOVERTIP_PADDING,
+      paddingRight: HOVERTIP_PADDING,
+      maxWidth: Sizes.TOOLTIP_WIDTH_MAX,
+    },
+  }),
+)

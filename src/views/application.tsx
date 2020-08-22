@@ -92,7 +92,9 @@ export class GLCanvas extends StatelessComponent<GLCanvasProps> {
       widthInAppUnits,
       heightInAppUnits,
     )
-    this.props.canvasContext.gl.clear(useDarkMode() ? new Graphics.Color(0.1, 0.1, 0.1, 1) : new Graphics.Color(1, 1, 1, 1))
+    this.props.canvasContext.gl.clear(
+      useDarkMode() ? new Graphics.Color(0.1, 0.1, 0.1, 1) : new Graphics.Color(1, 1, 1, 1),
+    )
   }
 
   onWindowResize = () => {
@@ -544,108 +546,110 @@ export class Application extends StatelessComponent<ApplicationProps> {
   }
 }
 
-const lightOrDarkStyle = lightOrDarkMode(isDarkMode => StyleSheet.create({
-  glCanvasView: {
-    position: 'absolute',
-    width: '100vw',
-    height: '100vh',
-    zIndex: -1,
-    pointerEvents: 'none',
-  },
-  error: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%',
-  },
-  loading: {
-    height: 3,
-    marginBottom: -3,
-    background: Colors.DARK_BLUE,
-    transformOrigin: '0% 50%',
-    animationName: [
-      {
-        from: {
-          transform: `scaleX(0)`,
-        },
-        to: {
-          transform: `scaleX(1)`,
-        },
-      },
-    ],
-    animationTimingFunction: 'cubic-bezier(0, 1, 0, 1)',
-    animationDuration: '30s',
-  },
-  root: {
-    width: '100vw',
-    height: '100vh',
-    overflow: 'hidden',
-    display: 'flex',
-    flexDirection: 'column',
-    position: 'relative',
-    fontFamily: FontFamily.MONOSPACE,
-    lineHeight: '20px',
-    color: isDarkMode ? Colors.OFF_WHITE : Colors.BLACK,
-  },
-  dragTargetRoot: {
-    cursor: 'copy',
-  },
-  dragTarget: {
-    boxSizing: 'border-box',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    border: `5px dashed ${Colors.DARK_BLUE}`,
-    pointerEvents: 'none',
-  },
-  contentContainer: {
-    position: 'relative',
-    display: 'flex',
-    overflow: 'hidden',
-    flexDirection: 'column',
-    flex: 1,
-  },
-  landingContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  landingMessage: {
-    maxWidth: 600,
-  },
-  landingP: {
-    marginBottom: 16,
-  },
-  hide: {
-    display: 'none',
-  },
-  browseButtonContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  browseButton: {
-    marginBottom: 16,
-    height: 72,
-    flex: 1,
-    maxWidth: 256,
-    textAlign: 'center',
-    fontSize: FontSize.BIG_BUTTON,
-    lineHeight: '72px',
-    background: Colors.DARK_BLUE,
-    color: Colors.WHITE,
-    transition: `all ${Duration.HOVER_CHANGE} ease-in`,
-    ':hover': {
-      background: Colors.BRIGHT_BLUE,
+const lightOrDarkStyle = lightOrDarkMode(isDarkMode =>
+  StyleSheet.create({
+    glCanvasView: {
+      position: 'absolute',
+      width: '100vw',
+      height: '100vh',
+      zIndex: -1,
+      pointerEvents: 'none',
     },
-  },
-  link: {
-    color: Colors.BRIGHT_BLUE,
-    cursor: 'pointer',
-    textDecoration: 'none',
-  },
-}))
+    error: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '100%',
+    },
+    loading: {
+      height: 3,
+      marginBottom: -3,
+      background: Colors.DARK_BLUE,
+      transformOrigin: '0% 50%',
+      animationName: [
+        {
+          from: {
+            transform: `scaleX(0)`,
+          },
+          to: {
+            transform: `scaleX(1)`,
+          },
+        },
+      ],
+      animationTimingFunction: 'cubic-bezier(0, 1, 0, 1)',
+      animationDuration: '30s',
+    },
+    root: {
+      width: '100vw',
+      height: '100vh',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'relative',
+      fontFamily: FontFamily.MONOSPACE,
+      lineHeight: '20px',
+      color: isDarkMode ? Colors.OFF_WHITE : Colors.BLACK,
+    },
+    dragTargetRoot: {
+      cursor: 'copy',
+    },
+    dragTarget: {
+      boxSizing: 'border-box',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      border: `5px dashed ${Colors.DARK_BLUE}`,
+      pointerEvents: 'none',
+    },
+    contentContainer: {
+      position: 'relative',
+      display: 'flex',
+      overflow: 'hidden',
+      flexDirection: 'column',
+      flex: 1,
+    },
+    landingContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
+    },
+    landingMessage: {
+      maxWidth: 600,
+    },
+    landingP: {
+      marginBottom: 16,
+    },
+    hide: {
+      display: 'none',
+    },
+    browseButtonContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    browseButton: {
+      marginBottom: 16,
+      height: 72,
+      flex: 1,
+      maxWidth: 256,
+      textAlign: 'center',
+      fontSize: FontSize.BIG_BUTTON,
+      lineHeight: '72px',
+      background: Colors.DARK_BLUE,
+      color: Colors.WHITE,
+      transition: `all ${Duration.HOVER_CHANGE} ease-in`,
+      ':hover': {
+        background: Colors.BRIGHT_BLUE,
+      },
+    },
+    link: {
+      color: Colors.BRIGHT_BLUE,
+      cursor: 'pointer',
+      textDecoration: 'none',
+    },
+  }),
+)
